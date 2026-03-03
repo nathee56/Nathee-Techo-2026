@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💫 The Gravity That Pulled Me Out — นทีถึงเตโช</title>
+    <meta name="description" content="Happy 4 Months Anniversary — จากนทีถึงเตโช">
+
+    <!-- Google Fonts: Prompt (Thai modern thin) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { prompt: ['Prompt', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ===== RESET ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: auto;
+            /* we control our own smoothness */
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* ===== STARFIELD CANVAS ===== */
+        #starfield {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        /* ===== NEBULA OVERLAY (for Scene 3 turbulence) ===== */
+        #nebula-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            background:
+                radial-gradient(ellipse at 30% 40%, rgba(180, 60, 30, 0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 70% 60%, rgba(200, 80, 40, 0.10) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(120, 40, 80, 0.08) 0%, transparent 45%);
+            transition: opacity 1.5s ease;
+        }
+
+        /* ===== GALAXY OVERLAY (for Scene 4 calm) ===== */
+        #galaxy-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            background:
+                radial-gradient(ellipse at 50% 50%, rgba(80, 100, 200, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 30% 70%, rgba(100, 60, 180, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(60, 140, 200, 0.05) 0%, transparent 45%);
+            transition: opacity 2s ease;
+        }
+
+        /* ===== CONTENT LAYER ===== */
+        #scroll-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ===== SCENE PANELS ===== */
+        .scene {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 1.5rem;
+            position: relative;
+        }
+
+        /* ===== GLOWING TEXT ===== */
+        .glow-text {
+            text-shadow:
+                0 0 10px rgba(255, 255, 255, 0.4),
+                0 0 30px rgba(255, 255, 255, 0.15),
+                0 0 60px rgba(255, 255, 255, 0.05);
+        }
+
+        .glow-text-warm {
+            text-shadow:
+                0 0 12px rgba(255, 200, 150, 0.5),
+                0 0 35px rgba(255, 180, 120, 0.2),
+                0 0 70px rgba(255, 150, 80, 0.08);
+        }
+
+        .glow-text-blue {
+            text-shadow:
+                0 0 12px rgba(130, 170, 255, 0.5),
+                0 0 35px rgba(100, 140, 255, 0.2),
+                0 0 70px rgba(80, 120, 255, 0.08);
+        }
+
+        .glow-text-rose {
+            text-shadow:
+                0 0 12px rgba(255, 150, 180, 0.5),
+                0 0 35px rgba(255, 120, 160, 0.2);
+        }
+
+        /* ===== FADE ELEMENTS ===== */
+        .fade-unit {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .fade-unit.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-unit.fade-out {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        /* ===== SPACE PHOTO ===== */
+        .space-photo {
+            max-width: 380px;
+            width: 85%;
+            border-radius: 8px;
+            mask-image: radial-gradient(ellipse 90% 85% at center, black 60%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 90% 85% at center, black 60%, transparent 100%);
+            opacity: 0.92;
+            transition: opacity 0.5s;
+        }
+
+        .space-photo:hover {
+            opacity: 1;
+        }
+
+        /* ===== NEON BUTTON ===== */
+        .neon-btn {
+            position: relative;
+            display: inline-block;
+            padding: 16px 48px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #fff;
+            background: transparent;
+            border: 2px solid rgba(255, 150, 180, 0.7);
+            border-radius: 50px;
+            cursor: pointer;
+            text-shadow: 0 0 10px rgba(255, 150, 180, 0.6);
+            box-shadow:
+                0 0 15px rgba(255, 150, 180, 0.25),
+                inset 0 0 15px rgba(255, 150, 180, 0.08);
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .neon-btn::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 52px;
+            background: linear-gradient(135deg, rgba(255, 150, 180, 0.15), rgba(130, 170, 255, 0.1));
+            z-index: -1;
+            filter: blur(12px);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .neon-btn:hover {
+            border-color: rgba(255, 150, 180, 1);
+            box-shadow:
+                0 0 25px rgba(255, 150, 180, 0.5),
+                0 0 60px rgba(255, 150, 180, 0.2),
+                inset 0 0 20px rgba(255, 150, 180, 0.12);
+            transform: scale(1.05);
+        }
+
+        .neon-btn:hover::before {
+            opacity: 1;
+        }
+
+        /* ===== BUTTON PULSE ATTENTION ===== */
+        .neon-btn-pulse {
+            animation: btn-glow-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes btn-glow-pulse {
+
+            0%,
+            100% {
+                box-shadow:
+                    0 0 15px rgba(255, 150, 180, 0.25),
+                    inset 0 0 15px rgba(255, 150, 180, 0.08);
+                transform: scale(1);
+            }
+
+            50% {
+                box-shadow:
+                    0 0 30px rgba(255, 150, 180, 0.6),
+                    0 0 60px rgba(255, 150, 180, 0.25),
+                    inset 0 0 25px rgba(255, 150, 180, 0.15);
+                transform: scale(1.05);
+            }
+        }
+
+        .btn-hint {
+            animation: hint-bounce 1.5s ease-in-out infinite;
+        }
+
+        @keyframes hint-bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+
+            50% {
+                transform: translateY(-6px);
+                opacity: 0.7;
+            }
+        }
+
+        /* ===== FINALE MESSAGE ===== */
+        #finale {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            overflow: hidden;
+        }
+
+        #finale.show {
+            display: flex;
+        }
+
+        /* ===== PULSING GLOW BACKGROUND ===== */
+        .finale-glow-container {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 2.5s ease;
+        }
+
+        .finale-glow-container.active {
+            opacity: 1;
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            will-change: transform, opacity;
+        }
+
+        .glow-orb-1 {
+            width: 60vw;
+            height: 60vw;
+            max-width: 500px;
+            max-height: 500px;
+            background: radial-gradient(circle, rgba(255, 100, 150, 0.22) 0%, transparent 70%);
+            top: 10%;
+            left: 15%;
+            animation: orb-drift-1 8s ease-in-out infinite alternate;
+        }
+
+        .glow-orb-2 {
+            width: 50vw;
+            height: 50vw;
+            max-width: 420px;
+            max-height: 420px;
+            background: radial-gradient(circle, rgba(160, 70, 220, 0.18) 0%, transparent 70%);
+            top: 30%;
+            right: 10%;
+            animation: orb-drift-2 10s ease-in-out infinite alternate;
+        }
+
+        .glow-orb-3 {
+            width: 55vw;
+            height: 55vw;
+            max-width: 460px;
+            max-height: 460px;
+            background: radial-gradient(circle, rgba(255, 150, 200, 0.16) 0%, transparent 70%);
+            bottom: 5%;
+            left: 30%;
+            animation: orb-drift-3 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes orb-drift-1 {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: translate(8vw, 5vh) scale(1.15);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-5vw, 10vh) scale(0.95);
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes orb-drift-2 {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: translate(-10vw, 8vh) scale(1.1);
+                opacity: 0.9;
+            }
+
+            100% {
+                transform: translate(5vw, -6vh) scale(1.05);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes orb-drift-3 {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: translate(6vw, -8vh) scale(1.2);
+                opacity: 0.85;
+            }
+
+            100% {
+                transform: translate(-8vw, 3vh) scale(0.9);
+                opacity: 0.65;
+            }
+        }
+
+        /* ===== FINALE CONTENT Z-INDEX ===== */
+        #finale>.text-center {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ===== TYPEWRITER CURSOR ===== */
+        .typewriter-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: rgba(255, 150, 180, 0.8);
+            margin-left: 3px;
+            vertical-align: text-bottom;
+            animation: cursor-blink 0.8s step-end infinite;
+        }
+
+        @keyframes cursor-blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 150, 180, 0.3);
+            border-radius: 2px;
+        }
+
+        /* ===== MUSIC TOGGLE ===== */
+        .music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 150;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 150, 180, 0.4);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 12px rgba(255, 150, 180, 0.15);
+        }
+
+        .music-toggle:hover {
+            border-color: rgba(255, 150, 180, 0.8);
+            box-shadow: 0 0 20px rgba(255, 150, 180, 0.35);
+            transform: scale(1.1);
+        }
+
+        .music-toggle.playing {
+            border-color: rgba(130, 170, 255, 0.6);
+            box-shadow: 0 0 16px rgba(130, 170, 255, 0.3);
+        }
+
+        /* Bars animation */
+        .music-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 16px;
+        }
+
+        .music-bars span {
+            display: block;
+            width: 3px;
+            background: #fff;
+            border-radius: 1px;
+            animation: bar-bounce 0.8s ease-in-out infinite alternate;
+        }
+
+        .music-bars span:nth-child(1) {
+            height: 6px;
+            animation-delay: 0s;
+        }
+
+        .music-bars span:nth-child(2) {
+            height: 12px;
+            animation-delay: 0.15s;
+        }
+
+        .music-bars span:nth-child(3) {
+            height: 8px;
+            animation-delay: 0.3s;
+        }
+
+        .music-bars span:nth-child(4) {
+            height: 14px;
+            animation-delay: 0.45s;
+        }
+
+        .music-bars.paused span {
+            animation: none;
+            height: 3px;
+        }
+
+        @keyframes bar-bounce {
+            0% {
+                height: 4px;
+            }
+
+            100% {
+                height: 16px;
+            }
+        }
+
+        /* ===== TIME COUNTER ===== */
+        .time-counter {
+            display: flex;
+            gap: 0.6rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .time-unit {
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .time-value {
+            font-size: 2rem;
+            font-weight: 600;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .time-label {
+            font-size: 0.7rem;
+            font-weight: 300;
+            opacity: 0.5;
+            margin-top: 4px;
+            letter-spacing: 0.1em;
+        }
+
+        /* ===== SPLASH SCREEN ===== */
+        #splash {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: opacity 1s ease;
+        }
+
+        #splash.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .splash-star {
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-radius: 50%;
+            margin-bottom: 40px;
+            box-shadow: 0 0 10px #fff, 0 0 30px rgba(255, 255, 255, 0.4), 0 0 60px rgba(255, 200, 150, 0.2);
+            animation: pulse-star 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-star {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: scale(1.8);
+                opacity: 1;
+            }
+        }
+
+        .splash-text {
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.2em;
+            animation: fade-pulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes fade-pulse {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 640px) {
+            .scene {
+                padding: 3rem 1.2rem;
+            }
+
+            .space-photo {
+                max-width: 300px;
+                width: 90%;
+            }
+
+            .neon-btn {
+                padding: 14px 36px;
+                font-size: 1.1rem;
+            }
+
+            .music-toggle {
+                top: 12px;
+                right: 12px;
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            .time-value {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* ===== GACHA SYSTEM ===== */
+        #gacha-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(5, 5, 16, 0.95);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #gacha-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .capsule-container {
+            cursor: pointer;
+            position: relative;
+            transform-origin: center;
+            transition: transform 0.1s;
+        }
+
+        .capsule {
+            width: 140px;
+            height: 180px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%),
+                linear-gradient(to bottom, #ff9a9e 0%, #fecfef 50%, #a1c4fd 50%, #c2e9fb 100%);
+            border-radius: 70px;
+            box-shadow: 0 0 30px rgba(255, 150, 180, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .capsule::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 1);
+        }
+
+        .shake-1 {
+            animation: shake-capsule 0.4s infinite;
+        }
+
+        .shake-2 {
+            animation: shake-capsule 0.3s infinite;
+        }
+
+        .shake-3 {
+            animation: shake-capsule 0.2s infinite;
+            transform: scale(1.1);
+        }
+
+        .shake-4 {
+            animation: shake-capsule 0.1s infinite;
+            transform: scale(1.2);
+        }
+
+        @keyframes shake-capsule {
+            0% {
+                transform: translate(1px, 1px) rotate(0deg);
+            }
+
+            25% {
+                transform: translate(-2px, -2px) rotate(-3deg);
+            }
+
+            50% {
+                transform: translate(2px, 1px) rotate(3deg);
+            }
+
+            75% {
+                transform: translate(-1px, 2px) rotate(-1deg);
+            }
+
+            100% {
+                transform: translate(1px, -1px) rotate(0deg);
+            }
+        }
+
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 1;
+            animation: explode 0.8s forwards ease-out;
+            z-index: 301;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        #coupon-card {
+            display: none;
+            width: 320px;
+            padding: 40px 20px;
+            background: rgba(25, 25, 35, 0.8);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 150, 180, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(255, 150, 180, 0.4), inset 0 0 20px rgba(255, 150, 180, 0.2);
+            text-align: center;
+            transform: scale(0.5);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: -180px;
+            z-index: 302;
+        }
+
+        #coupon-card.reveal {
+            transform: scale(1);
+            opacity: 1;
+            display: block;
+        }
+
+        .coupon-title {
+            font-size: 1.2rem;
+            color: #ff9a9e;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .coupon-reward {
+            font-size: 1.6rem;
+            line-height: 1.4;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .gacha-hint {
+            margin-top: 50px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            letter-spacing: 1px;
+            animation: pulse-star 2s infinite;
+        }
+
+        .time-unit {
+            min-width: 48px;
+        }
+
+        /* ===== LETTER SYSTEM ===== */
+        #letter-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(10, 5, 20, 0.95);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #letter-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .letter-container {
+            position: relative;
+            width: 340px;
+            height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .letter-envelope {
+            position: absolute;
+            width: 280px;
+            height: 180px;
+            background: #d4a373;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+            transform-origin: bottom;
+        }
+
+        .letter-envelope:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(212, 163, 115, 0.4);
+        }
+
+        .letter-envelope.open {
+            transform: translateY(150px) scale(0.9);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 100px solid #e9bda5;
+            z-index: 3;
+            border-radius: 8px 8px 0 0;
+            transform-origin: top;
+            transition: transform 0.6s ease;
+        }
+
+        .letter-envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-front {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid #d4a373;
+            border-right: 140px solid #d4a373;
+            border-bottom: 110px solid #c9935f;
+            z-index: 2;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .envelope-text {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: #5c3a21;
+            font-size: 1.1rem;
+            font-weight: 500;
+            z-index: 4;
+            pointer-events: none;
+            animation: pulse-star 2s infinite;
+        }
+
+        .letter-paper {
+            position: absolute;
+            width: 320px;
+            height: auto;
+            min-height: 400px;
+            background: #fdfbf7;
+            padding: 30px 20px;
+            border-radius: 6px;
+            box-shadow: 0 5px 25px rgba(255, 150, 180, 0.2);
+            z-index: 1;
+            color: #4a4a4a;
+            transform: translateY(60px) scale(0.8);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition-delay: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .letter-envelope.open~.letter-paper {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            z-index: 20;
+        }
+
+        .letter-title {
+            font-size: 1.4rem;
+            color: #d4a373;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed #d4a373;
+            padding-bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .letter-content {
+            font-weight: 300;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #5c3a21;
+        }
+    </style>
+</head>
+
+<body class="font-prompt">
+
+    <!-- ===== SPLASH / ENTRY SCREEN ===== -->
+    <div id="splash">
+        <div class="splash-star"></div>
+        <p class="splash-text">แตะเพื่อเริ่มต้นเรื่องราว ✦</p>
+    </div>
+
+    <!-- ===== BACKGROUND MUSIC ===== -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="assets/music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ===== MUSIC TOGGLE BUTTON ===== -->
+    <button class="music-toggle" id="music-toggle" title="เปิด/ปิดเพลง" style="display:none">
+        <div class="music-bars paused" id="music-bars">
+            <span></span><span></span><span></span><span></span>
+        </div>
+    </button>
+
+    <!-- ===== STARFIELD CANVAS ===== -->
+    <canvas id="starfield"></canvas>
+
+    <!-- ===== ATMOSPHERIC OVERLAYS ===== -->
+    <div id="nebula-overlay"></div>
+    <div id="galaxy-overlay"></div>
+
+    <!-- ===== SCROLL CONTENT ===== -->
+    <div id="scroll-content">
+
+        <!-- ==================== SCENE 1: STATIC VOID ==================== -->
+        <section class="scene" id="scene1" data-speed="0.3">
+            <div class="max-w-xl text-center">
+                <p class="fade-unit text-xl md:text-2xl font-extralight glow-text leading-relaxed tracking-wide mb-8"
+                    data-delay="0">
+                    ช่วงที่ผ่านมา...
+                </p>
+                <p class="fade-unit text-2xl md:text-4xl font-light glow-text leading-relaxed mb-6" data-delay="200">
+                    นทีรู้ว่าเตโชคงรู้สึกเหมือนถูกกักขัง
+                </p>
+            </div>
+            <div class="absolute bottom-10 fade-unit" data-delay="800">
+                <p class="text-sm text-white/30 tracking-widest animate-bounce">▼ เลื่อนลง ▼</p>
+            </div>
+        </section>
+
+        <!-- ==================== SCENE 2: THE PULL ==================== -->
+        <section class="scene" id="scene2" data-speed="2.5">
+            <div class="max-w-xl text-center">
+                <p class="fade-unit text-2xl md:text-3xl font-light glow-text-warm leading-relaxed mb-8" data-delay="0">
+                    ที่นทีเอาแต่ใจ หวง หึง ไม่ค่อยอยากให้ไปกับเพื่อน...
+                </p>
+                <p class="fade-unit text-lg md:text-xl font-extralight glow-text-warm leading-relaxed mb-12 opacity-80"
+                    data-delay="200">
+                    เพราะนทีแค่คิดตื้นๆ<br>ว่าอยากอยู่ด้วยกันตลอดเวลา
+                </p>
+
+            </div>
+        </section>
+
+        <!-- ==================== SCENE 3: TURBULENCE ==================== -->
+        <section class="scene" id="scene3" data-speed="4" data-nebula="1">
+            <div class="max-w-xl text-center">
+                <p class="fade-unit text-xl md:text-2xl font-light glow-text leading-relaxed mb-8" data-delay="0">
+                    แต่นทีไม่ได้ตั้งใจจะเป็นแรงดึงดูดที่ทำให้เตโชอึดอัดเลยนะ...
+                </p>
+                <p class="fade-unit text-lg md:text-xl font-extralight glow-text leading-relaxed mb-8 opacity-70"
+                    data-delay="200">
+                    เพิ่งรู้ตัวว่ามันมากเกินไป... 🥺
+                </p>
+                <p class="fade-unit text-3xl md:text-4xl font-light glow-text-rose leading-relaxed mt-12"
+                    data-delay="400">
+                    นทียอมแล้ว ยกธงขาวเลย 🏳️
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================== SCENE 4: THE CONSTANT ==================== -->
+        <section class="scene" id="scene4" data-speed="1.2" data-galaxy="1">
+            <div class="max-w-xl text-center">
+                <p class="fade-unit text-2xl md:text-3xl font-light glow-text-blue leading-relaxed mb-8" data-delay="0">
+                    จากนี้ไป นทีจะเว้น 'Space' ให้เตโช<br>ได้มีพื้นที่ของตัวเอง ได้ไปเที่ยวกับเพื่อน...
+                </p>
+                <p class="fade-unit text-lg md:text-xl font-extralight glow-text-blue leading-relaxed mb-12 opacity-80"
+                    data-delay="200">
+                    ขอแค่เรายังอยู่ในวงโคจรเดียวกันก็พอ 🌌
+                </p>
+
+
+            </div>
+        </section>
+
+        <!-- ==================== SCENE 4.5: APOLOGIES ==================== -->
+        <section class="scene" id="scene4b" data-speed="1" data-galaxy="1">
+            <div class="max-w-xl text-center">
+                <p class="fade-unit text-2xl md:text-3xl font-light glow-text-warm leading-relaxed mb-10"
+                    data-delay="0">
+                    สิ่งที่นทีอยากขอโทษทำเตโชเสียความรู้สึก... ✦
+                </p>
+                <div class="space-y-6 text-left max-w-md mx-auto">
+                    <p class="fade-unit text-lg md:text-xl font-extralight glow-text leading-relaxed opacity-90"
+                        data-delay="200">
+                        ✦ ขอโทษที่เคยงี่เง่า เอาแต่ใจในหลายๆ เรื่อง
+                    </p>
+                    <p class="fade-unit text-lg md:text-xl font-extralight glow-text leading-relaxed opacity-90"
+                        data-delay="400">
+                        ✦ ขอโทษที่หวงและหึงจนทำให้เตโชรู้สึกอึดอัด
+                    </p>
+                    <p class="fade-unit text-lg md:text-xl font-extralight glow-text leading-relaxed opacity-90"
+                        data-delay="600">
+                        ✦ ขอโทษที่บางครั้งใช้อารมณ์มากเกินไป
+                    </p>
+                    <p class="fade-unit text-lg md:text-xl font-extralight glow-text leading-relaxed opacity-90"
+                        data-delay="800">
+                        ✦ ขอโทษที่ไม่ได้เป็นความสบายใจให้เตโชในบางเวลา
+                    </p>
+                    <p class="fade-unit text-lg md:text-xl font-light glow-text-warm leading-relaxed mt-8"
+                        data-delay="1000">
+                        นทีรู้สึกผิดจริงๆ นะ... 🥺
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SCENE 4.75: PROMISES ==================== -->
+        <section class="scene" id="scene4c" data-speed="1" data-galaxy="1">
+            <div class="max-w-xl text-center">
+                <p class="fade-unit text-2xl md:text-3xl font-light glow-text-rose leading-relaxed mb-10"
+                    data-delay="0">
+                    และนี่คือสิ่งที่นทีอยากสัญญาเพื่อแก้ไข... 🤝
+                </p>
+                <div class="space-y-6 text-left max-w-md mx-auto">
+                    <p class="fade-unit text-lg md:text-xl font-extralight glow-text leading-relaxed opacity-90"
+                        data-delay="200">
+                        🤍 จะให้เกียรติพื้นที่ส่วนตัวของเตโชมากขึ้น
+                    </p>
+                    <p class="fade-unit text-lg md:text-xl font-extralight glow-text leading-relaxed opacity-90"
+                        data-delay="400">
+                        🤍 จะมีเหตุผลและรับฟังเสมอ ไม่ใช้อารมณ์
+                    </p>
+                    <p class="fade-unit text-lg md:text-xl font-extralight glow-text leading-relaxed opacity-90"
+                        data-delay="600">
+                        🤍 จะสนับสนุนให้เตโชได้ใช้เวลากับเพื่อนๆ
+                    </p>
+                    <p class="fade-unit text-lg md:text-xl font-extralight glow-text leading-relaxed opacity-90"
+                        data-delay="800">
+                        🤍 จะปรับปรุงตัวเองให้เป็นนทีที่ดีขึ้น
+                    </p>
+                    <p class="fade-unit text-lg md:text-xl font-extralight glow-text leading-relaxed opacity-90"
+                        data-delay="1000">
+                        🤍 จะดูแลความรักของเราให้ดีกว่าเดิม
+                    </p>
+                    <p class="fade-unit text-lg md:text-xl font-light glow-text-rose leading-relaxed mt-8"
+                        data-delay="1200">
+                        ขอโอกาสให้นทีได้พิสูจน์นะ... 💕
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SCENE 5: FOREVER ORBIT ==================== -->
+        <section class="scene" id="scene5" data-speed="1">
+            <div class="max-w-xl text-center">
+                <p class="fade-unit text-3xl md:text-5xl font-semibold glow-text-rose leading-relaxed mb-12"
+                    data-delay="0">
+                    ให้อภัยนทีนะ...<br>นทีพร้อมปรับตัวเพื่อที่จะได้มีเตโชเป็นคู่ชีวิตตลอดไป 💕
+                </p>
+                <div class="fade-unit" data-delay="300">
+                    <button class="neon-btn neon-btn-pulse" id="btn-hyperdrive" onclick="triggerHyperdrive()">
+                        ดีกันนะ 🤍
+                    </button>
+                    <p class="btn-hint text-sm text-white/40 tracking-wider mt-4">☝️ กดตรงนี้นะ ☝️</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ===== FINALE OVERLAY ===== -->
+    <div id="finale">
+        <!-- Smooth pulsing glow orbs -->
+        <div class="finale-glow-container" id="finale-glow">
+            <div class="glow-orb glow-orb-1"></div>
+            <div class="glow-orb glow-orb-2"></div>
+            <div class="glow-orb glow-orb-3"></div>
+        </div>
+
+        <div class="text-center px-6">
+            <p class="text-5xl md:text-7xl mb-6" id="finale-emoji" style="opacity:0">💖</p>
+            <h1 class="text-3xl md:text-5xl font-semibold glow-text-rose mb-4" id="finale-title" style="opacity:0">
+                ขอโทษนะเตโช... ขอบคุณที่อดทนและยังอยู่ด้วยกันมาตลอด
+            </h1>
+            <p class="text-xl md:text-2xl font-light glow-text leading-relaxed mb-3" id="finale-sub" style="opacity:0">
+                <span id="typewriter-text"></span><span class="typewriter-cursor" id="typewriter-cursor"
+                    style="display:none"></span>
+            </p>
+            <div class="mt-6 mb-4" id="finale-counter" style="opacity:0">
+                <p class="text-xs font-light text-white/40 mb-2 tracking-wider">รักกันมาแล้ว</p>
+                <div class="time-counter glow-text-rose" id="finale-time">
+                    <div class="time-unit">
+                        <div class="time-value" id="ft-days">---</div>
+                        <div class="time-label">วัน</div>
+                    </div>
+                    <div class="time-unit">
+                        <div class="time-value" id="ft-hours">--</div>
+                        <div class="time-label">ชั่วโมง</div>
+                    </div>
+                    <div class="time-unit">
+                        <div class="time-value" id="ft-mins">--</div>
+                        <div class="time-label">นาที</div>
+                    </div>
+                    <div class="time-unit">
+                        <div class="time-value" id="ft-secs">--</div>
+                        <div class="time-label">วินาที</div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-sm text-white/40 mt-6" id="finale-footer" style="opacity:0">
+                — with love, from นที to เตโช —
+            </p>
+            <div id="finale-gacha" style="opacity:0; transition: opacity 1s;"
+                class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
+                <button class="neon-btn neon-btn-pulse w-full sm:w-auto"
+                    style="font-size: 1.1rem; padding: 12px 30px; border-color: rgba(255, 200, 150, 0.7); box-shadow: 0 0 15px rgba(255, 200, 150, 0.25); text-shadow: 0 0 10px rgba(255, 200, 150, 0.6);"
+                    onclick="openGacha()">
+                    🎁 สุ่มรับคูปองพิเศษ 🎁
+                </button>
+                <button class="neon-btn neon-btn-pulse w-full sm:w-auto delay-100"
+                    style="font-size: 1.1rem; padding: 12px 30px; border-color: rgba(150, 200, 255, 0.7); box-shadow: 0 0 15px rgba(150, 200, 255, 0.25); text-shadow: 0 0 10px rgba(150, 200, 255, 0.6);"
+                    onclick="openLetter()">
+                    💌 เปิดจดหมายความในใจ 💌
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== GACHA OVERLAY ===== -->
+    <div id="gacha-overlay">
+        <div class="capsule-container" id="capsule-container" onclick="hitCapsule()">
+            <div class="capsule" id="capsule"></div>
+        </div>
+        <p class="gacha-hint" id="gacha-hint">กดรัวๆ ที่แคปซูลเพื่อเปิด!</p>
+
+        <div id="coupon-card">
+            <h3 class="coupon-title">🎁 Anniversary Coupon</h3>
+            <p class="coupon-reward" id="coupon-reward">...</p>
+            <p class="text-sm text-white/50">*แคปหน้าจอเก็บไว้ทวงได้เลย!</p>
+            <button
+                class="mt-8 px-8 py-2 rounded-full border border-white/30 text-white/80 hover:bg-white/10 hover:text-white transition"
+                onclick="closeGacha()">ปิดกลับไป</button>
+        </div>
+    </div>
+
+    <!-- ===== LETTER OVERLAY ===== -->
+    <div id="letter-overlay">
+        <div class="letter-container" id="letter-container">
+            <div class="letter-envelope" id="letter-envelope" onclick="openEnvelope()" title="แตะเพื่อเปิดซองจดหมาย">
+                <div class="envelope-flap"></div>
+                <div class="envelope-body"></div>
+                <div class="envelope-front"></div>
+                <p class="envelope-text">To: เตโช 🤍<br><span
+                        class="text-xs font-light opacity-80">(แตะเพื่อเปิด)</span></p>
+            </div>
+
+            <div class="letter-paper" id="letter-paper">
+                <h3 class="letter-title">ความในใจจากนที 📝</h3>
+                <div class="letter-content text-left space-y-4">
+                    <p>ขอบคุณนะที่ทนความเอาแต่ใจของนทีมาตลอด</p>
+                    <p>ที่นทีหวง ก็เพราะนทีรักเตโชมากๆ ไม่อยากเสียเตโชไป</p>
+                    <p>บางทีอาจจะแสดงออกในทางที่ผิดไปหน่อย... ทำให้เตโชอึดอัด นทีขอโทษจริงๆ นะครับ</p>
+                    <p>จากนี้ไป นทีจะพยายามเป็นคนที่ดีขึ้น มีเหตุผลมากขึ้น</p>
+                    <p>จะพยายามเว้นระยะให้เตโชได้มีพื้นที่ส่วนตัว ได้ไปทำสิ่งที่ชอบ</p>
+                    <p class="text-center mt-6 font-semibold glow-text-rose" style="color: #ff9a9e;">
+                        ขอแค่เตโชยังจับมือกันไว้ก็พอ... นทีรักเตโชนะครับ 💕</p>
+                </div>
+                <button
+                    class="mt-8 px-6 py-2 rounded-full border border-[#d4a373] text-[#d4a373] hover:bg-[#d4a373] hover:text-white transition font-prompt text-sm"
+                    onclick="closeLetter()">พับเก็บจดหมาย 💌</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+            (() => {
+                /* ===========================================================
+                   STARFIELD ENGINE — HTML5 Canvas, 60fps
+                   =========================================================== */
+                const canvas = document.getElementById('starfield');
+                const ctx = canvas.getContext('2d');
+                let W, H, cx, cy;
+
+                function resize() {
+                    W = canvas.width = window.innerWidth;
+                    H = canvas.height = window.innerHeight;
+                    cx = W / 2;
+                    cy = H / 2;
+                }
+                resize();
+                window.addEventListener('resize', resize);
+
+                // Star pool
+                const STAR_COUNT = window.innerWidth < 640 ? 600 : 1200;
+                const stars = [];
+
+                class Star {
+                    constructor() { this.reset(); }
+                    reset() {
+                        // Random position in 3D space
+                        this.x = (Math.random() - 0.5) * W * 2;
+                        this.y = (Math.random() - 0.5) * H * 2;
+                        this.z = Math.random() * W;
+                        this.pz = this.z; // previous z for streak
+                        // Colour: mostly white, occasionally warm/blue tint
+                        const roll = Math.random();
+                        if (roll < 0.08) this.hue = 220;  // blue
+                        else if (roll < 0.14) this.hue = 30;   // warm
+                        else if (roll < 0.18) this.hue = 340;  // pink
+                        else this.hue = 0;    // white
+                        this.sat = this.hue === 0 ? 0 : Math.random() * 40 + 30;
+                    }
+                }
+
+                for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
+
+                // Current speed (controlled by scroll position)
+                const isMobile = 'ontouchstart' in window || window.innerWidth < 640;
+                let currentSpeed = isMobile ? 0.2 : 0.3;  // base
+                let targetSpeed = isMobile ? 0.2 : 0.3;
+                let hyperdriveOn = false;
+                let hyperSpeed = 0;
+                const SPEED_SMOOTH = isMobile ? 0.03 : 0.06; // slower smoothing on mobile
+                const MAX_SPEED = isMobile ? 1.2 : 999; // cap speed on mobile
+
+                function renderStars() {
+                    // Slight speed smoothing
+                    currentSpeed += (targetSpeed - currentSpeed) * SPEED_SMOOTH;
+                    const speed = hyperdriveOn ? hyperSpeed : Math.min(currentSpeed, MAX_SPEED);
+
+                    // Semi-transparent black for trailing effect
+                    ctx.fillStyle = speed > 6 ? 'rgba(0,0,0,0.15)' : 'rgba(0,0,0,0.25)';
+                    ctx.fillRect(0, 0, W, H);
+
+                    for (const s of stars) {
+                        s.pz = s.z;
+                        s.z -= speed;
+
+                        if (s.z <= 0.5) { s.reset(); s.z = W; s.pz = s.z; continue; }
+
+                        // Project
+                        const sx = (s.x / s.z) * cx + cx;
+                        const sy = (s.y / s.z) * cy + cy;
+
+                        // Previous projected position (for streak)
+                        const px = (s.x / s.pz) * cx + cx;
+                        const py = (s.y / s.pz) * cy + cy;
+
+                        // Size based on depth
+                        const r = Math.max(0, (1 - s.z / W) * 2.5);
+
+                        // Brightness based on depth
+                        const bri = Math.min(1, (1 - s.z / W) * 1.4);
+
+                        if (sx < -10 || sx > W + 10 || sy < -10 || sy > H + 10) continue;
+
+                        const col = s.hue === 0
+                            ? `rgba(255,255,255,${bri})`
+                            : `hsla(${s.hue},${s.sat}%,${70 + bri * 20}%,${bri})`;
+
+                        if (speed > 2) {
+                            // Draw streak
+                            ctx.beginPath();
+                            ctx.moveTo(px, py);
+                            ctx.lineTo(sx, sy);
+                            ctx.strokeStyle = col;
+                            ctx.lineWidth = r * 0.8;
+                            ctx.stroke();
+                        } else {
+                            // Draw dot
+                            ctx.beginPath();
+                            ctx.arc(sx, sy, r, 0, Math.PI * 2);
+                            ctx.fillStyle = col;
+                            ctx.fill();
+                        }
+                    }
+
+                    requestAnimationFrame(renderStars);
+                }
+                renderStars();
+
+                /* ===========================================================
+                   SCROLL CONTROLLER
+                   =========================================================== */
+                const scenes = document.querySelectorAll('.scene');
+                const nebulaO = document.getElementById('nebula-overlay');
+                const galaxyO = document.getElementById('galaxy-overlay');
+
+                function onScroll() {
+                    if (hyperdriveOn) return;
+
+                    const scrollY = window.scrollY;
+                    const vh = window.innerHeight;
+
+                    // Determine which scene is most in view
+                    let activeScene = null;
+                    let maxVisible = 0;
+
+                    scenes.forEach(sc => {
+                        const rect = sc.getBoundingClientRect();
+                        const visible = Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, 0));
+                        if (visible > maxVisible) {
+                            maxVisible = visible;
+                            activeScene = sc;
+                        }
+                    });
+
+                    // Set star speed from data attribute
+                    if (activeScene) {
+                        const sceneSpeed = parseFloat(activeScene.dataset.speed) || 0.5;
+                        targetSpeed = isMobile ? Math.min(sceneSpeed, MAX_SPEED) : sceneSpeed;
+
+                        // Nebula overlay
+                        nebulaO.style.opacity = activeScene.dataset.nebula ? '1' : '0';
+                        // Galaxy overlay
+                        galaxyO.style.opacity = activeScene.dataset.galaxy ? '1' : '0';
+                    }
+
+                    // Fade units visibility
+                    document.querySelectorAll('.fade-unit').forEach(el => {
+                        const rect = el.getBoundingClientRect();
+                        const enter = rect.top < vh * 0.85;
+                        const exit = rect.bottom < vh * 0.05;
+
+                        if (enter && !exit) {
+                            el.classList.add('visible');
+                            el.classList.remove('fade-out');
+                        } else if (exit) {
+                            el.classList.remove('visible');
+                            el.classList.add('fade-out');
+                        } else {
+                            el.classList.remove('visible', 'fade-out');
+                        }
+                    });
+                }
+
+                window.addEventListener('scroll', onScroll, { passive: true });
+
+                // Initial trigger
+                setTimeout(onScroll, 100);
+                // Also trigger fade for scene1 items on load
+                setTimeout(() => {
+                    document.querySelectorAll('#scene1 .fade-unit').forEach((el, i) => {
+                        const delay = parseInt(el.dataset.delay) || 0;
+                        setTimeout(() => el.classList.add('visible'), 600 + delay);
+                    });
+                }, 200);
+
+                /* ===========================================================
+                   HYPERDRIVE — on commit button click
+                   =========================================================== */
+                window.triggerHyperdrive = function () {
+                    const btn = document.getElementById('btn-hyperdrive');
+                    btn.style.pointerEvents = 'none';
+                    btn.style.opacity = '0.5';
+
+                    hyperdriveOn = true;
+                    hyperSpeed = currentSpeed;
+
+                    // Nebula/galaxy off
+                    nebulaO.style.opacity = '0';
+                    galaxyO.style.opacity = '0';
+
+                    // Accelerate stars
+                    function accel() {
+                        if (hyperSpeed < 80) {
+                            hyperSpeed += 1.5;
+                            requestAnimationFrame(accel);
+                        } else {
+                            // Flash white then show finale
+                            const flash = document.createElement('div');
+                            flash.style.cssText = 'position:fixed;inset:0;background:#fff;z-index:99;opacity:0;pointer-events:none;transition:opacity 0.4s';
+                            document.body.appendChild(flash);
+
+                            requestAnimationFrame(() => {
+                                flash.style.opacity = '1';
+                                setTimeout(() => {
+                                    // Show finale
+                                    const finale = document.getElementById('finale');
+                                    finale.classList.add('show');
+                                    hyperSpeed = 0.5; // calm
+
+                                    flash.style.opacity = '0';
+                                    setTimeout(() => flash.remove(), 500);
+
+                                    // Fade in finale elements
+                                    const ids = ['finale-emoji', 'finale-title', 'finale-sub', 'finale-counter', 'finale-footer', 'finale-gacha'];
+                                    ids.forEach((id, i) => {
+                                        const el = document.getElementById(id);
+                                        setTimeout(() => {
+                                            el.style.transition = 'opacity 1s ease, transform 1s ease';
+                                            el.style.opacity = '1';
+                                            el.style.transform = 'translateY(0)';
+                                            // Start typewriter when finale-sub fades in
+                                            if (id === 'finale-sub') startTypewriter();
+                                        }, i * 400 + 200);
+                                        el.style.transform = 'translateY(20px)';
+                                    });
+
+                                    // Start pulsing glow
+                                    document.getElementById('finale-glow').classList.add('active');
+                                }, 600);
+                            });
+                        }
+                    }
+
+                    // Small delay then go
+                    setTimeout(accel, 100);
+
+                    // Hide scroll content
+                    setTimeout(() => {
+                        document.getElementById('scroll-content').style.opacity = '0';
+                        document.getElementById('scroll-content').style.transition = 'opacity 1s';
+                    }, 800);
+                };
+
+                /* ===========================================================
+                   BACKGROUND MUSIC CONTROLLER
+                   =========================================================== */
+                const audio = document.getElementById('bg-music');
+                const musicBtn = document.getElementById('music-toggle');
+                const musicBars = document.getElementById('music-bars');
+                let musicStarted = false;
+                let musicPlaying = false;
+
+                function playMusic() {
+                    audio.volume = 0;
+                    audio.currentTime = 22; // เริ่มเพลงที่วินาทีที่ 30
+                    audio.play().then(() => {
+                        musicPlaying = true;
+                        musicStarted = true;
+                        musicBars.classList.remove('paused');
+                        musicBtn.classList.add('playing');
+                        // Fade volume in
+                        let vol = 0;
+                        const fadeIn = setInterval(() => {
+                            vol += 0.02;
+                            if (vol >= 0.5) { vol = 0.5; clearInterval(fadeIn); }
+                            audio.volume = vol;
+                        }, 50);
+                    }).catch(() => { /* autoplay blocked, user will click toggle */ });
+                }
+
+                function toggleMusic() {
+                    if (!musicStarted) {
+                        playMusic();
+                    } else if (musicPlaying) {
+                        audio.pause();
+                        musicPlaying = false;
+                        musicBars.classList.add('paused');
+                        musicBtn.classList.remove('playing');
+                    } else {
+                        audio.play();
+                        musicPlaying = true;
+                        musicBars.classList.remove('paused');
+                        musicBtn.classList.add('playing');
+                    }
+                }
+
+                musicBtn.addEventListener('click', toggleMusic);
+
+                // ===== SPLASH SCREEN — click to enter + start music =====
+                const splash = document.getElementById('splash');
+                document.body.style.overflow = 'hidden'; // lock scroll until enter
+
+                splash.addEventListener('click', () => {
+                    // Start music immediately
+                    playMusic();
+                    // Show music toggle
+                    musicBtn.style.display = 'flex';
+                    // Fade out splash
+                    splash.classList.add('hide');
+                    // Unlock scroll
+                    document.body.style.overflow = '';
+                    // Remove splash after animation
+                    setTimeout(() => splash.remove(), 1200);
+                    // Trigger scene1 fade-ins
+                    document.querySelectorAll('#scene1 .fade-unit').forEach((el, i) => {
+                        const delay = parseInt(el.dataset.delay) || 0;
+                        setTimeout(() => el.classList.add('visible'), 400 + delay);
+                    });
+                }, { once: true });
+                splash.addEventListener('touchstart', () => splash.click(), { once: true, passive: true });
+
+                /* ===========================================================
+                   REAL-TIME RELATIONSHIP COUNTER
+                   วันเริ่มคบ: 5 พฤศจิกายน 2025 (พ.ศ. 2568)
+                   =========================================================== */
+                const START_DATE = new Date('2025-11-05T00:00:00'); // 5 พฤศจิกายน 2025
+
+                function updateCounter() {
+                    const now = new Date();
+                    const diff = now - START_DATE;
+
+                    const totalSecs = Math.floor(diff / 1000);
+                    const days = Math.floor(totalSecs / 86400);
+                    const hours = Math.floor((totalSecs % 86400) / 3600);
+                    const mins = Math.floor((totalSecs % 3600) / 60);
+                    const secs = totalSecs % 60;
+
+                    // Finale counter
+                    const d2 = document.getElementById('ft-days');
+                    if (d2) {
+                        d2.textContent = days;
+                        document.getElementById('ft-hours').textContent = String(hours).padStart(2, '0');
+                        document.getElementById('ft-mins').textContent = String(mins).padStart(2, '0');
+                        document.getElementById('ft-secs').textContent = String(secs).padStart(2, '0');
+                    }
+                }
+
+                updateCounter();
+                setInterval(updateCounter, 1000);
+
+
+                /* ===========================================================
+                   TYPEWRITER EFFECT — for finale sub text
+                   =========================================================== */
+                function startTypewriter() {
+                    const fullText = 'นทีจะรักเตโชตลอดไป 🥰';
+                    const target = document.getElementById('typewriter-text');
+                    const cursor = document.getElementById('typewriter-cursor');
+                    cursor.style.display = 'inline-block';
+                    let idx = 0;
+
+                    function typeChar() {
+                        if (idx < fullText.length) {
+                            target.textContent += fullText[idx];
+                            idx++;
+                            setTimeout(typeChar, 100 + Math.random() * 60);
+                        } else {
+                            // Hide cursor after typing finishes
+                            setTimeout(() => {
+                                cursor.style.animation = 'none';
+                                cursor.style.opacity = '0';
+                                cursor.style.transition = 'opacity 0.5s';
+                            }, 1500);
+                        }
+                    }
+
+                    // Small delay before starting
+                    setTimeout(typeChar, 400);
+                }
+
+                /* ===========================================================
+                   GACHA SYSTEM
+                   =========================================================== */
+                const rewards = [
+                    "เลี้ยงข้าว 1 มื้อ 🍽️",
+                    "บ่นได้โดยไม่เถียง 1 วัน 🤐",
+                    "ตามใจ 1 อย่าง (อะไรก็ได้) ✨",
+                    "นวดหลัง 30 นาที 💆‍♂️",
+                    "หอมแก้ม 1 ฟอด 😘",
+                    "ดูหนังด้วยกัน 1 เรื่อง 🍿",
+                    "ขออะไรก็ได้ 1 อย่าง 🧞‍♂️"
+                ];
+
+                let clicks = 0;
+                const MAX_CLICKS = 10;
+                const capsuleContainer = document.getElementById('capsule-container');
+                const couponCard = document.getElementById('coupon-card');
+                const couponReward = document.getElementById('coupon-reward');
+                const gachaHint = document.getElementById('gacha-hint');
+
+                window.openGacha = function () {
+                    const overlay = document.getElementById('gacha-overlay');
+                    overlay.style.display = 'flex';
+                    // Trigger reflow
+                    void overlay.offsetWidth;
+                    overlay.style.opacity = '1';
+
+                    // Reset state
+                    clicks = 0;
+                    capsuleContainer.style.display = 'block';
+                    capsuleContainer.className = 'capsule-container';
+                    couponCard.classList.remove('reveal');
+                    setTimeout(() => couponCard.style.display = 'none', 300);
+                    gachaHint.style.opacity = '1';
+                };
+
+                window.closeGacha = function () {
+                    const overlay = document.getElementById('gacha-overlay');
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                    }, 500);
+                };
+
+                window.hitCapsule = function () {
+                    if (clicks >= MAX_CLICKS) return;
+
+                    clicks++;
+
+                    // Visual feedback
+                    capsuleContainer.style.transform = `scale(${1 - (clicks * 0.02)})`;
+                    setTimeout(() => {
+                        if (clicks < MAX_CLICKS) capsuleContainer.style.transform = 'scale(1)';
+                    }, 50);
+
+                    // Add shake class
+                    capsuleContainer.className = 'capsule-container';
+                    if (clicks > 2) capsuleContainer.classList.add('shake-1');
+                    if (clicks > 5) capsuleContainer.classList.add('shake-2');
+                    if (clicks > 7) capsuleContainer.classList.add('shake-3');
+                    if (clicks > 8) capsuleContainer.classList.add('shake-4');
+
+                    if (clicks >= MAX_CLICKS) {
+                        explodeCapsule();
+                    }
+                };
+
+                function explodeCapsule() {
+                    // Hide capsule
+                    capsuleContainer.style.display = 'none';
+                    gachaHint.style.opacity = '0';
+
+                    // Generate particles
+                    const overlay = document.getElementById('gacha-overlay');
+                    const rect = capsuleContainer.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+
+                    for (let i = 0; i < 50; i++) {
+                        const p = document.createElement('div');
+                        p.className = 'particle';
+                        p.style.left = centerX + 'px';
+                        p.style.top = centerY + 'px';
+
+                        const angle = Math.random() * Math.PI * 2;
+                        const distance = 80 + Math.random() * 150;
+                        const tx = Math.cos(angle) * distance;
+                        const ty = Math.sin(angle) * distance;
+
+                        p.style.setProperty('--tx', tx + 'px');
+                        p.style.setProperty('--ty', ty + 'px');
+
+                        // Random color
+                        const colors = ['#ff9a9e', '#fecfef', '#a1c4fd', '#c2e9fb', '#ffffff'];
+                        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+                        overlay.appendChild(p);
+                        setTimeout(() => p.remove(), 800);
+                    }
+
+                    // Show coupon
+                    setTimeout(() => {
+                        couponCard.style.display = 'block';
+                        // Pick random reward
+                        const reward = rewards[Math.floor(Math.random() * rewards.length)];
+                        couponReward.textContent = reward;
+
+                        void couponCard.offsetWidth; // reflow
+                        couponCard.classList.add('reveal');
+                    }, 400);
+                }
+
+                /* ===========================================================
+                   LETTER SYSTEM
+                   =========================================================== */
+                const letterOverlay = document.getElementById('letter-overlay');
+                const letterEnvelope = document.getElementById('letter-envelope');
+
+                window.openLetter = function () {
+                    letterOverlay.style.display = 'flex';
+                    void letterOverlay.offsetWidth; // trigger reflow
+                    letterOverlay.style.opacity = '1';
+                    letterEnvelope.classList.remove('open');
+                };
+
+                window.closeLetter = function () {
+                    letterOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        letterOverlay.style.display = 'none';
+                        letterEnvelope.classList.remove('open');
+                    }, 500);
+                };
+
+                window.openEnvelope = function () {
+                    letterEnvelope.classList.add('open');
+                };
+
+            })();
+    </script>
+</body>
+
+</html>

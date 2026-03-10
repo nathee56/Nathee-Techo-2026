@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚔ นิทานแห่งสองนักรบ — นที & เตโช ⚔</title>
+    <meta name="description" content="นิทานแฟนตาซียุคกลาง เรื่องราวความรักอันยิ่งใหญ่ของสองนักรบ นที และ เตโช">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+Thai:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ========================================
+   CSS RESET & BASE
+   ======================================== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #07080f;
+            color: #d4c9a8;
+            font-family: 'Noto Serif Thai', 'Crimson Text', serif;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        /* ========================================
+   SCROLL PROGRESS BAR
+   ======================================== */
+        #scrollProgress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, #8b6914, #d4a843, #f5d67b, #d4a843, #8b6914);
+            z-index: 9999;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(212, 168, 67, 0.6);
+        }
+
+        /* ========================================
+   INTRO SCREEN
+   ======================================== */
+        #introScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #05060a;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity 1.5s ease;
+        }
+
+        #introScreen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #introStars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .intro-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .sword-icon {
+            font-size: 80px;
+            color: #d4a843;
+            animation: floatSword 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(212, 168, 67, 0.5)) drop-shadow(0 0 60px rgba(212, 168, 67, 0.2));
+            text-shadow: 0 0 40px rgba(212, 168, 67, 0.6);
+        }
+
+        @keyframes floatSword {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-18px);
+            }
+        }
+
+        .intro-subtitle {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 12px;
+            color: #d4a843;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        /* ========================================
+   BUTTON STYLES (GLOBAL)
+   ======================================== */
+        .medieval-btn {
+            padding: 12px 24px;
+            font-size: 11px;
+            letter-spacing: 4px;
+            background: transparent;
+            color: #d4a843;
+            border: 1px solid #d4a843;
+            cursor: crosshair;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            border-radius: 0;
+            z-index: 10;
+            text-transform: uppercase;
+            transition: box-shadow 0.4s ease, color 0.3s ease;
+            border-radius: 0;
+        }
+
+        .medieval-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 168, 67, 0.2), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s ease;
+        }
+
+        .medieval-btn:hover::before {
+            transform: scaleX(1);
+        }
+
+        .medieval-btn:hover {
+            box-shadow: 0 0 20px rgba(212, 168, 67, 0.3), 0 0 40px rgba(212, 168, 67, 0.1);
+            color: #f5d67b;
+        }
+
+        /* ========================================
+   INTRO BUTTON SPECIFIC (Prettified)
+   ======================================== */
+        #openStoryBtn {
+            padding: 18px 48px;
+            font-size: 14px;
+            letter-spacing: 8px;
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: bold;
+            color: #ffeba1;
+            background: linear-gradient(180deg, rgba(212, 168, 67, 0.15) 0%, rgba(212, 168, 67, 0.02) 100%);
+            border: 1px solid rgba(212, 168, 67, 0.6);
+            border-top: 2px solid rgba(255, 230, 150, 0.9);
+            border-bottom: 1px solid rgba(212, 168, 67, 0.3);
+            box-shadow: 0px 8px 25px rgba(212, 168, 67, 0.3), inset 0px 2px 10px rgba(212, 168, 67, 0.2);
+            text-shadow: 0 0 10px rgba(255, 230, 150, 0.6);
+            border-radius: 4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            z-index: 10;
+            animation: majesticBreathe 3s infinite alternate;
+            backdrop-filter: blur(4px);
+        }
+
+        @keyframes majesticBreathe {
+            0% {
+                box-shadow: 0px 8px 25px rgba(212, 168, 67, 0.2), inset 0px 2px 10px rgba(212, 168, 67, 0.1);
+                text-shadow: 0 0 10px rgba(255, 230, 150, 0.4);
+                border-color: rgba(212, 168, 67, 0.5);
+                transform: translateY(0);
+            }
+
+            100% {
+                box-shadow: 0px 12px 35px rgba(255, 215, 0, 0.4), inset 0px 4px 15px rgba(255, 215, 0, 0.2);
+                text-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 0 25px rgba(255, 215, 0, 0.5);
+                border-color: rgba(255, 230, 150, 0.9);
+                transform: translateY(-2px);
+            }
+        }
+
+        #openStoryBtn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: transform 0.8s ease;
+            transform: skewX(-20deg);
+        }
+
+        #openStoryBtn:hover::before {
+            transform: skewX(-20deg) translateX(300%);
+        }
+
+        #openStoryBtn:hover {
+            background: linear-gradient(180deg, rgba(212, 168, 67, 0.3) 0%, rgba(212, 168, 67, 0.1) 100%);
+            color: #ffffff;
+            box-shadow: 0px 15px 40px rgba(255, 215, 0, 0.6), inset 0px 4px 20px rgba(255, 215, 0, 0.4);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 1), 0 0 25px rgba(255, 215, 0, 0.8);
+            border-color: #ffffff;
+            transform: scale(1.05) translateY(-4px);
+            animation: none;
+        }
+
+        /* ========================================
+   MAIN CONTENT WRAPPER
+   ======================================== */
+        #mainContent {
+            opacity: 0;
+            transition: opacity 1.5s ease 0.3s;
+            display: none;
+        }
+
+        #mainContent.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ========================================
+   STARRY BACKGROUND (MAIN)
+   ======================================== */
+        #starsCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ========================================
+   EMBER PARTICLES
+   ======================================== */
+        .ember {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: #d4a843;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+            animation: emberFloat linear infinite;
+        }
+
+        @keyframes emberFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) translateX(0px);
+            }
+
+            10% {
+                opacity: 0.8;
+            }
+
+            90% {
+                opacity: 0.4;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) translateX(80px);
+            }
+        }
+
+        /* ========================================
+   HEADER / TITLE SECTION
+   ======================================== */
+        .story-header {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 120px 20px 80px;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .story-header .ornament-top {
+            font-size: 28px;
+            color: #d4a843;
+            letter-spacing: 20px;
+            margin-bottom: 30px;
+            opacity: 0.6;
+        }
+
+        .story-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(28px, 5vw, 52px);
+            font-weight: 900;
+            color: #d4a843;
+            text-shadow: 0 0 40px rgba(212, 168, 67, 0.4), 0 2px 4px rgba(0, 0, 0, 0.8);
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+
+        .story-title-thai {
+            font-family: 'Noto Serif Thai', serif;
+            font-size: clamp(22px, 3.5vw, 38px);
+            font-weight: 700;
+            color: #c9a84c;
+            text-shadow: 0 0 30px rgba(201, 168, 76, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .story-header .divider {
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d4a843, transparent);
+            margin: 20px auto;
+        }
+
+        .story-header .subtitle {
+            font-family: 'Crimson Text', serif;
+            font-size: 16px;
+            color: #a89060;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+
+        /* ========================================
+   CHAPTER CARDS
+   ======================================== */
+        .chapters-container {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .chapter-card {
+            position: relative;
+            margin-bottom: 100px;
+            padding: 50px 40px;
+            background:
+                linear-gradient(135deg, rgba(30, 25, 15, 0.92), rgba(20, 17, 10, 0.95));
+            border: 1px solid rgba(212, 168, 67, 0.25);
+            box-shadow:
+                0 0 30px rgba(212, 168, 67, 0.06),
+                inset 0 0 60px rgba(212, 168, 67, 0.03);
+
+            /* Scroll reveal */
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .chapter-card.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Parchment texture overlay */
+        .chapter-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(212, 168, 67, 0.01) 3px,
+                    rgba(212, 168, 67, 0.01) 4px);
+            pointer-events: none;
+        }
+
+        /* Corner ornaments */
+        .chapter-card::after {
+            content: '⚜';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            color: rgba(212, 168, 67, 0.35);
+        }
+
+        .corner-bl,
+        .corner-br,
+        .corner-tl,
+        .corner-tr {
+            position: absolute;
+            font-size: 12px;
+            color: rgba(212, 168, 67, 0.2);
+        }
+
+        .corner-tl {
+            top: 8px;
+            left: 12px;
+        }
+
+        .corner-tr {
+            top: 8px;
+            right: 12px;
+        }
+
+        .corner-bl {
+            bottom: 8px;
+            left: 12px;
+        }
+
+        .corner-br {
+            bottom: 8px;
+            right: 12px;
+        }
+
+        .chapter-number {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 12px;
+            letter-spacing: 6px;
+            color: #8b6914;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .chapter-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(18px, 3vw, 26px);
+            font-weight: 700;
+            color: #d4a843;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(212, 168, 67, 0.3);
+        }
+
+        .chapter-title-thai {
+            font-family: 'Noto Serif Thai', serif;
+            font-size: clamp(18px, 3vw, 24px);
+            font-weight: 700;
+            color: #c9a84c;
+            margin-bottom: 6px;
+        }
+
+        .chapter-date {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            color: #8b6914;
+            letter-spacing: 3px;
+            margin-bottom: 24px;
+        }
+
+        .chapter-divider {
+            width: 120px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212, 168, 67, 0.4), transparent);
+            margin: 0 auto 24px;
+        }
+
+        .chapter-text {
+            font-family: 'Noto Serif Thai', serif;
+            font-size: 17px;
+            color: #c8bda0;
+            line-height: 2;
+            text-indent: 2em;
+        }
+
+        .chapter-text .highlight {
+            color: #f5d67b;
+            font-weight: 600;
+        }
+
+        .chapter-text .dialogue {
+            color: #e8d5a0;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .chapter-symbol {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 22px;
+            color: rgba(212, 168, 67, 0.3);
+            letter-spacing: 16px;
+        }
+
+        /* Section Dividers */
+        .section-divider {
+            text-align: center;
+            padding: 40px 0;
+            font-size: 16px;
+            color: rgba(212, 168, 67, 0.25);
+            letter-spacing: 12px;
+        }
+
+        /* ========================================
+   CHAPTER VIDEO BACKGROUND
+   ======================================== */
+        .chapter-video-bg {
+            position: relative;
+            z-index: 2;
+            width: 100vw;
+            min-height: 100vh;
+            margin-left: calc(-50vw + 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 60px;
+        }
+
+        .chapter-video-bg video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.25;
+            z-index: 0;
+            pointer-events: none;
+
+            /* Blurring and fading edges to blend into background */
+            filter: blur(4px);
+            -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
+            mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .chapter-video-bg .chapter-card {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            width: 100%;
+            margin: 60px 20px;
+            background: linear-gradient(135deg, rgba(30, 25, 15, 0.85), rgba(20, 17, 10, 0.9));
+        }
+
+        /* ========================================
+   LOVE TIMER SECTION
+   ======================================== */
+        .timer-section {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 80px 20px 120px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .timer-title {
+            font-family: 'Noto Serif Thai', serif;
+            font-size: clamp(20px, 3vw, 30px);
+            font-weight: 700;
+            color: #d4a843;
+            margin-bottom: 40px;
+            text-shadow: 0 0 30px rgba(212, 168, 67, 0.3);
+        }
+
+        .timer-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .timer-box {
+            border: 1px solid rgba(212, 168, 67, 0.3);
+            padding: 20px 16px;
+            min-width: 110px;
+            background: rgba(20, 17, 10, 0.7);
+            box-shadow: 0 0 20px rgba(212, 168, 67, 0.05), inset 0 0 30px rgba(212, 168, 67, 0.03);
+        }
+
+        .timer-number {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 900;
+            color: #f5d67b;
+            text-shadow: 0 0 20px rgba(245, 214, 123, 0.4);
+            line-height: 1;
+            display: block;
+        }
+
+        .timer-label {
+            font-family: 'Noto Serif Thai', serif;
+            font-size: 13px;
+            color: #8b6914;
+            margin-top: 8px;
+            letter-spacing: 2px;
+            display: block;
+        }
+
+        .timer-quote {
+            font-family: 'Noto Serif Thai', serif;
+            font-size: 16px;
+            color: #a89060;
+            font-style: italic;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .timer-quote::before,
+        .timer-quote::after {
+            content: ' ❦ ';
+            color: rgba(212, 168, 67, 0.4);
+        }
+
+        /* ========================================
+   ENDING QUOTE
+   ======================================== */
+        .ending-quote-section {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 60px 20px 80px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .ending-quote-text {
+            font-family: 'Noto Serif Thai', serif;
+            font-size: clamp(22px, 4vw, 34px);
+            font-weight: 700;
+            color: #f5d67b;
+            text-shadow: 0 0 30px rgba(245, 214, 123, 0.4), 0 0 60px rgba(212, 168, 67, 0.2);
+            line-height: 1.8;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.5s ease, transform 1.5s ease;
+        }
+
+        .ending-quote-text.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .ending-quote-ornament {
+            font-size: 16px;
+            color: rgba(212, 168, 67, 0.3);
+            letter-spacing: 12px;
+            margin-top: 24px;
+        }
+
+        /* Voice Clip Button */
+        .voice-btn-container {
+            margin-top: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease 0.5s, transform 1s ease 0.5s;
+        }
+
+        .voice-btn-container.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .voice-btn {
+            padding: 16px 36px;
+            font-family: 'Noto Serif Thai', serif;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            background: linear-gradient(180deg, rgba(212, 168, 67, 0.15) 0%, rgba(212, 168, 67, 0.03) 100%);
+            color: #f5d67b;
+            border: 1px solid rgba(212, 168, 67, 0.5);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 0 10px rgba(245, 214, 123, 0.3);
+            box-shadow: 0 0 20px rgba(212, 168, 67, 0.1), inset 0 0 20px rgba(212, 168, 67, 0.05);
+            animation: voiceBtnGlow 3s infinite alternate;
+        }
+
+        @keyframes voiceBtnGlow {
+            0% {
+                box-shadow: 0 0 15px rgba(212, 168, 67, 0.1), inset 0 0 15px rgba(212, 168, 67, 0.05);
+            }
+
+            100% {
+                box-shadow: 0 0 30px rgba(212, 168, 67, 0.3), inset 0 0 25px rgba(212, 168, 67, 0.1);
+                border-color: rgba(245, 214, 123, 0.7);
+            }
+        }
+
+        .voice-btn:hover {
+            background: linear-gradient(180deg, rgba(212, 168, 67, 0.3) 0%, rgba(212, 168, 67, 0.1) 100%);
+            color: #ffffff;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .voice-btn:disabled {
+            opacity: 0.5;
+            cursor: default;
+            animation: none;
+        }
+
+        .voice-btn:disabled:hover {
+            transform: none;
+            background: linear-gradient(180deg, rgba(212, 168, 67, 0.15) 0%, rgba(212, 168, 67, 0.03) 100%);
+            color: #f5d67b;
+            box-shadow: 0 0 20px rgba(212, 168, 67, 0.1);
+            text-shadow: 0 0 10px rgba(245, 214, 123, 0.3);
+        }
+
+        .voice-replay-btn {
+            display: none;
+            margin-top: 16px;
+            padding: 10px 28px;
+            font-family: 'Noto Serif Thai', serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            background: transparent;
+            color: #a89060;
+            border: 1px solid rgba(168, 144, 96, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .voice-replay-btn:hover {
+            color: #f5d67b;
+            border-color: rgba(212, 168, 67, 0.5);
+            box-shadow: 0 0 15px rgba(212, 168, 67, 0.15);
+        }
+
+        .voice-playing-indicator {
+            display: none;
+            margin-top: 16px;
+            font-family: 'Noto Serif Thai', serif;
+            font-size: 13px;
+            color: #d4a843;
+            letter-spacing: 2px;
+            animation: voicePulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes voicePulse {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Voice Fullscreen Overlay */
+        .voice-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(5, 6, 10, 0.92);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .voice-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .voice-overlay-icon {
+            font-size: 60px;
+            color: #f5d67b;
+            animation: voiceOverlayPulse 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(245, 214, 123, 0.5));
+        }
+
+        @keyframes voiceOverlayPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        .voice-overlay-text {
+            font-family: 'Noto Serif Thai', serif;
+            font-size: clamp(16px, 3vw, 22px);
+            color: #d4a843;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(212, 168, 67, 0.4);
+            animation: voicePulse 1.5s ease-in-out infinite;
+        }
+
+        .voice-overlay-sub {
+            font-family: 'Noto Serif Thai', serif;
+            font-size: 13px;
+            color: rgba(168, 144, 96, 0.6);
+            letter-spacing: 2px;
+        }
+
+        .voice-overlay-bars {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            height: 30px;
+        }
+
+        .voice-overlay-bars span {
+            width: 4px;
+            background: #d4a843;
+            border-radius: 2px;
+            animation: soundBar 0.8s ease-in-out infinite alternate;
+        }
+
+        .voice-overlay-bars span:nth-child(1) {
+            height: 8px;
+            animation-delay: 0s;
+        }
+
+        .voice-overlay-bars span:nth-child(2) {
+            height: 16px;
+            animation-delay: 0.1s;
+        }
+
+        .voice-overlay-bars span:nth-child(3) {
+            height: 24px;
+            animation-delay: 0.2s;
+        }
+
+        .voice-overlay-bars span:nth-child(4) {
+            height: 16px;
+            animation-delay: 0.3s;
+        }
+
+        .voice-overlay-bars span:nth-child(5) {
+            height: 8px;
+            animation-delay: 0.4s;
+        }
+
+        @keyframes soundBar {
+            0% {
+                transform: scaleY(0.4);
+            }
+
+            100% {
+                transform: scaleY(1.6);
+            }
+        }
+
+        /* ========================================
+   FOOTER
+   ======================================== */
+        .site-footer {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 40px 20px 60px;
+            border-top: 1px solid rgba(212, 168, 67, 0.1);
+        }
+
+        .footer-ornament {
+            font-size: 20px;
+            color: rgba(212, 168, 67, 0.3);
+            letter-spacing: 16px;
+            margin-bottom: 16px;
+        }
+
+        .footer-text {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            color: rgba(168, 144, 96, 0.5);
+            letter-spacing: 4px;
+        }
+
+        /* ========================================
+   AUDIO TOGGLE BUTTON
+   ======================================== */
+        #audioToggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9998;
+            padding: 10px 24px;
+            font-size: 10px;
+            letter-spacing: 3px;
+        }
+
+        #audioToggle .icon {
+            margin-right: 6px;
+        }
+
+        /* ========================================
+   TYPEWRITER CURSOR
+   ======================================== */
+        .typewriter-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background-color: #f5d67b;
+            vertical-align: text-bottom;
+            margin-left: 5px;
+            animation: blinkCursor 0.8s step-end infinite;
+        }
+
+        @keyframes blinkCursor {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* ========================================
+   RESPONSIVE
+   ======================================== */
+        @media (max-width: 600px) {
+            .chapter-card {
+                padding: 40px 24px;
+                margin-bottom: 60px;
+            }
+
+            .timer-box {
+                min-width: 80px;
+                padding: 14px 10px;
+            }
+
+            .timer-grid {
+                gap: 12px;
+            }
+
+            #audioToggle {
+                bottom: 14px;
+                right: 14px;
+                padding: 8px 16px;
+                font-size: 9px;
+            }
+
+            .story-header {
+                padding: 80px 16px 60px;
+            }
+
+            .medieval-btn {
+                padding: 12px 32px;
+                font-size: 10px;
+                letter-spacing: 3px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ========================================
+     SCROLL PROGRESS BAR
+     ======================================== -->
+    <div id="scrollProgress"></div>
+
+    <!-- ========================================
+     INTRO SCREEN
+     ======================================== -->
+    <div id="introScreen">
+        <canvas id="introStars"></canvas>
+        <div class="intro-content">
+            <div class="sword-icon">⚔</div>
+            <div class="intro-subtitle">นิทานแฟนตาซี · ยุคกลาง</div>
+            <button class="medieval-btn" id="openStoryBtn" onclick="openStory()">✦ เปิดนิทาน ✦</button>
+        </div>
+    </div>
+
+    <!-- ========================================
+     MAIN CONTENT
+     ======================================== -->
+    <div id="mainContent">
+        <canvas id="starsCanvas"></canvas>
+
+        <!-- Embers (injected by JS) -->
+
+        <!-- HEADER -->
+        <header class="story-header">
+            <div class="ornament-top">⚜ ⚔ ⚜</div>
+            <h1 class="story-title">The Tale of Two Warriors</h1>
+            <p class="story-title-thai">นิทานแห่งสองนักรบ</p>
+            <div class="divider"></div>
+            <p class="subtitle">นที &amp; เตโช</p>
+        </header>
+
+        <!-- CHAPTERS -->
+        <main class="chapters-container">
+
+            <!-- ─── Chapter 1 with Video Background ─── -->
+            <div class="chapter-video-bg" id="chapter1VideoBg">
+                <video id="chapterVideo1" muted playsinline>
+                    <source src="Greek_Warrior.mp4" type="video/mp4">
+                </video>
+                <article class="chapter-card" id="chapter1">
+                    <span class="corner-tl">✦</span>
+                    <span class="corner-tr">✦</span>
+                    <span class="corner-bl">✦</span>
+                    <span class="corner-br">✦</span>
+                    <div class="chapter-number">Chapter I</div>
+                    <h2 class="chapter-title-thai">การพบกันครั้งแรก</h2>
+                    <h3 class="chapter-title">The First Meeting</h3>
+                    <div class="chapter-date">18 · March · 2025</div>
+                    <div class="chapter-divider"></div>
+                    <p class="chapter-text">
+                        ณ ยามเช้าอันเงียบสงบหน้าสถาบันอัศวิน <span class="highlight">นที</span>
+                        นั่งรออยู่คนเดียวท่ามกลางอากาศเย็น
+                        เขาไม่รู้ตัวเลยว่าวันนี้ชีวิตจะเปลี่ยนไป — จนกระทั่งชายหนุ่มคนหนึ่งเดินตรงมานั่งข้างๆ
+                        โดยไม่ได้ถูกเชิญ
+                        ยิ้มกว้างแล้วเอ่ยขึ้นด้วยเสียงอบอุ่น <span class="dialogue" id="typewriterText1"
+                            data-text="&quot;มาสัมภาษณ์เหมือนกันหรอ?&quot;"></span>
+                        คนนั้นคือ <span class="highlight">เตโช</span> — และนทีไม่เคยลืมใบหน้านั้นอีกเลย
+                    </p>
+                    <div class="chapter-symbol">⚔ ⚜ ⚔</div>
+                </article>
+            </div>
+
+            <div class="section-divider">· · · ✦ · · ·</div>
+
+            <!-- ─── Chapter 2 with Video Background ─── -->
+            <div class="chapter-video-bg" id="chapter2VideoBg">
+                <video id="chapterVideo2" muted playsinline>
+                    <source src="ซินที่ 2.mp4" type="video/mp4">
+                </video>
+                <article class="chapter-card" id="chapter2">
+                    <span class="corner-tl">✦</span>
+                    <span class="corner-tr">✦</span>
+                    <span class="corner-bl">✦</span>
+                    <span class="corner-br">✦</span>
+                    <div class="chapter-number">Chapter II</div>
+                    <h2 class="chapter-title-thai">ค่ายฝึกฝน</h2>
+                    <h3 class="chapter-title">The Training Camp</h3>
+                    <div class="chapter-date">—</div>
+                    <div class="chapter-divider"></div>
+                    <p class="chapter-text">
+                        ทั้งสองผ่านการสอบคัดเลือกและถูกจัดให้อยู่ในค่ายฝึกอัศวินเดียวกัน
+                        ทุกวันพวกเขา <span class="highlight">ฝึกฝนด้วยกัน กินข้าวด้วยกัน เดินกลับด้วยกัน</span>
+                        — เหมือนเงาที่แยกจากกันไม่ได้ ราวกับโชคชะตาจงใจผูกมัดพวกเขาไว้
+                        แต่ลึกลงไปในใจของ <span class="highlight">นที</span> เขารู้ดีว่าความรู้สึกที่มีต่อ
+                        <span class="highlight">เตโช</span> นั้นมากกว่าคำว่า "เพื่อน" มานานแล้ว
+                    </p>
+                    <div class="chapter-symbol">⚔ ⚜ ⚔</div>
+                </article>
+            </div>
+
+            <div class="section-divider">· · · ✦ · · ·</div>
+
+            <!-- ─── Chapter 3 with Video Background ─── -->
+            <div class="chapter-video-bg" id="chapter3VideoBg">
+                <video id="chapterVideo3" muted playsinline>
+                    <source src="ซีนที่ 3.mp4" type="video/mp4">
+                </video>
+                <article class="chapter-card" id="chapter3">
+                    <span class="corner-tl">✦</span>
+                    <span class="corner-tr">✦</span>
+                    <span class="corner-bl">✦</span>
+                    <span class="corner-br">✦</span>
+                    <div class="chapter-number">Chapter III</div>
+                    <h2 class="chapter-title-thai">ต่างรู้อยู่แก่ใจ</h2>
+                    <h3 class="chapter-title">They Both Knew</h3>
+                    <div class="chapter-date">—</div>
+                    <div class="chapter-divider"></div>
+                    <p class="chapter-text">
+                        แท้จริงแล้ว ทั้งคู่ต่าง <span class="highlight">รู้ความรู้สึกของอีกฝ่าย</span>
+                        มาตลอดทุกช่วงเวลา — แต่ไม่มีใครกล้าเอ่ยออกมาก่อน
+                        พวกเขาเพียงแค่ <span class="dialogue">นั่งเงียบๆ ข้างกัน</span> ในคืนที่ฟ้าเต็มไปด้วยดาว
+                        ปล่อยให้ความเงียบพูดแทนคำพูดทั้งหมด — และรอคอยจังหวะที่ถูกต้อง
+                        จังหวะที่หัวใจพร้อมจะเปิดเผยทุกสิ่ง
+                    </p>
+                    <div class="chapter-symbol">⚔ ⚜ ⚔</div>
+                </article>
+            </div>
+
+            <div class="section-divider">· · · ✦ · · ·</div>
+
+            <!-- ─── Chapter 4 with Video Background ─── -->
+            <div class="chapter-video-bg" id="chapter4VideoBg">
+                <video id="chapterVideo4" muted playsinline>
+                    <source src="ซีนที่ 4.mp4" type="video/mp4">
+                </video>
+                <article class="chapter-card" id="chapter4">
+                    <span class="corner-tl">✦</span>
+                    <span class="corner-tr">✦</span>
+                    <span class="corner-bl">✦</span>
+                    <span class="corner-br">✦</span>
+                    <div class="chapter-number">Chapter IV</div>
+                    <h2 class="chapter-title-thai">คืนใต้แสงดาว</h2>
+                    <h3 class="chapter-title">The Night Under the Stars</h3>
+                    <div class="chapter-date">5 · November · 2025</div>
+                    <div class="chapter-divider"></div>
+                    <p class="chapter-text">
+                        หลังจากภารกิจอันยาวนาน ทั้งสองพักอยู่ที่โรงแรมกลางเมือง
+                        คืนนั้นพวกเขานั่งอยู่ใต้ท้องฟ้าที่เต็มไปด้วยดวงดาวนับพัน
+                        แล้ว <span class="highlight">เตโช</span> ก็หันมามองนที — ด้วยแววตาที่ส่องประกายกว่าดาวทุกดวง —
+                        แล้วเอ่ยขึ้นก่อน
+                    </p>
+                    <p class="chapter-text"
+                        style="text-align:center; text-indent:0; margin: 24px 0; font-size: 20px; min-height: 34px;">
+                        <span class="dialogue" id="typewriterText" style="font-size: 22px;"
+                            data-text="&quot;เราคบกันได้ไหม?&quot;"></span>
+                    </p>
+                    <p class="chapter-text">
+                        <span class="highlight">นที</span> ยิ้มออกมา — รอยยิ้มที่ซ่อนไว้มานานแสนนาน — แล้วพยักหน้าตอบ
+                        คืนนั้น สองนักรบกลายเป็นหนึ่งเดียว ✦
+                    </p>
+                    <div class="chapter-symbol">❦ ⚔ ❦</div>
+                </article>
+            </div>
+
+        </main>
+
+        <!-- LOVE TIMER -->
+        <section class="timer-section" id="timerSection">
+            <div class="ornament-top"
+                style="font-size:20px; letter-spacing:16px; color:rgba(212,168,67,0.3); margin-bottom:30px;">⚜ ⚔ ⚜</div>
+            <h2 class="timer-title">นที &amp; เตโช คบกันมาแล้ว...</h2>
+            <div class="timer-grid">
+                <div class="timer-box">
+                    <span class="timer-number" id="timerDays">0</span>
+                    <span class="timer-label">วัน</span>
+                </div>
+                <div class="timer-box">
+                    <span class="timer-number" id="timerHours">0</span>
+                    <span class="timer-label">ชั่วโมง</span>
+                </div>
+                <div class="timer-box">
+                    <span class="timer-number" id="timerMinutes">0</span>
+                    <span class="timer-label">นาที</span>
+                </div>
+                <div class="timer-box">
+                    <span class="timer-number" id="timerSeconds">0</span>
+                    <span class="timer-label">วินาที</span>
+                </div>
+            </div>
+            <p class="timer-quote">ไม่ว่าเวลาจะผ่านไปนานเท่าไหร่ ข้าจะอยู่เคียงข้างเจ้าเสมอ</p>
+        </section>
+
+        <!-- ENDING QUOTE -->
+        <section class="ending-quote-section">
+            <div class="divider"
+                style="width:160px; height:1px; background:linear-gradient(90deg, transparent, rgba(212,168,67,0.3), transparent); margin:0 auto 40px;">
+            </div>
+            <p class="ending-quote-text" id="endingQuote">「 ขอให้รักของเราไม่มีตอนจบ 」</p>
+            <div class="ending-quote-ornament">❦ ⚔ ❦</div>
+
+            <!-- Voice Clip Button -->
+            <div class="voice-btn-container" id="voiceBtnContainer">
+                <button class="voice-btn" id="voiceClipBtn" onclick="playVoiceClip()">✦ บทความนิรันดร์ ✦</button>
+                <div class="voice-playing-indicator" id="voicePlayingIndicator">♪ กำลังเล่นเสียง... ♪</div>
+                <button class="voice-replay-btn" id="voiceReplayBtn" onclick="playVoiceClip()">⟲ ฟังอีกครั้ง</button>
+            </div>
+        </section>
+
+        <!-- VOICE CLIP AUDIO -->
+        <audio id="voiceClip" preload="auto">
+            <source src="voice.mp3" type="audio/mpeg">
+        </audio>
+
+        <!-- VOICE FULLSCREEN OVERLAY -->
+        <div class="voice-overlay" id="voiceOverlay">
+            <div class="voice-overlay-icon">💌</div>
+            <div class="voice-overlay-bars">
+                <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="voice-overlay-text">♪ นทีกำลังพูดถึงเธอ... ♪</div>
+            <div class="voice-overlay-sub">ฟังให้จบนะ</div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="site-footer">
+            <div class="footer-ornament">⚜ ⚔ ⚜</div>
+            <p class="footer-text">A Tale Written in the Stars — Natee &amp; Techo — Forever</p>
+        </footer>
+    </div>
+
+    <!-- BACKGROUND MUSIC -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="bgm.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- AUDIO TOGGLE -->
+    <button class="medieval-btn" id="audioToggle" onclick="toggleAudio()" style="display:none;">
+        <span class="icon">♫</span> ปิดเพลง
+    </button>
+
+    <script>
+        /* ==========================================
+           INTRO STARS (Canvas)
+           ========================================== */
+        (function initIntroStars() {
+            const canvas = document.getElementById('introStars');
+            const ctx = canvas.getContext('2d');
+            let w, h, stars = [];
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+
+            function createStars() {
+                stars = [];
+                for (let i = 0; i < 200; i++) {
+                    stars.push({
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        r: Math.random() * 1.5 + 0.3,
+                        a: Math.random(),
+                        speed: Math.random() * 0.005 + 0.002,
+                        phase: Math.random() * Math.PI * 2
+                    });
+                }
+            }
+
+            let introAnimating = true;
+            function drawIntro(time) {
+                if (!introAnimating) return;
+                ctx.clearRect(0, 0, w, h);
+                for (const s of stars) {
+                    const alpha = 0.3 + 0.7 * Math.abs(Math.sin(time * s.speed + s.phase));
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(212, 168, 67, ${alpha})`;
+                    ctx.fill();
+                }
+                requestAnimationFrame(drawIntro);
+            }
+
+            resize();
+            createStars();
+            requestAnimationFrame(drawIntro);
+            window.addEventListener('resize', () => { resize(); createStars(); });
+
+            window.stopIntroStars = () => { introAnimating = false; };
+        })();
+
+        /* ==========================================
+           OPEN STORY
+           ========================================== */
+        function openStory() {
+            const intro = document.getElementById('introScreen');
+            const main = document.getElementById('mainContent');
+            const audioBtn = document.getElementById('audioToggle');
+            const bgMusic = document.getElementById('bgMusic');
+
+            intro.classList.add('fade-out');
+
+            // Start BGM at 0.10 seconds
+            bgMusic.currentTime = 0.10;
+            bgMusic.volume = 0.5;
+            bgMusic.play().catch(() => { });
+            audioPlaying = true;
+
+            setTimeout(() => {
+                intro.style.display = 'none';
+                window.stopIntroStars();
+                main.style.display = 'block';
+                // Force reflow
+                void main.offsetWidth;
+                main.classList.add('visible');
+                audioBtn.style.display = 'block';
+                initMainStars();
+                createEmbers();
+                initScrollReveal();
+                initVideoAutoplay();
+                startTimer();
+            }, 1500);
+        }
+
+        /* ==========================================
+           MAIN STARS (Canvas)
+           ========================================== */
+        function initMainStars() {
+            const canvas = document.getElementById('starsCanvas');
+            const ctx = canvas.getContext('2d');
+            let w, h, stars = [];
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+
+            function create() {
+                stars = [];
+                for (let i = 0; i < 160; i++) {
+                    stars.push({
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        r: Math.random() * 1.4 + 0.2,
+                        speed: Math.random() * 0.004 + 0.001,
+                        phase: Math.random() * Math.PI * 2
+                    });
+                }
+            }
+
+            function draw(time) {
+                ctx.clearRect(0, 0, w, h);
+                for (const s of stars) {
+                    const alpha = 0.2 + 0.6 * Math.abs(Math.sin(time * s.speed + s.phase));
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(212, 168, 67, ${alpha})`;
+                    ctx.fill();
+                }
+                requestAnimationFrame(draw);
+            }
+
+            resize();
+            create();
+            requestAnimationFrame(draw);
+            window.addEventListener('resize', () => { resize(); create(); });
+        }
+
+        /* ==========================================
+           EMBER PARTICLES
+           ========================================== */
+        function createEmbers() {
+            const body = document.body;
+            for (let i = 0; i < 25; i++) {
+                const ember = document.createElement('div');
+                ember.className = 'ember';
+                ember.style.left = Math.random() * 100 + 'vw';
+                ember.style.animationDuration = (8 + Math.random() * 12) + 's';
+                ember.style.animationDelay = Math.random() * 10 + 's';
+                ember.style.width = (2 + Math.random() * 3) + 'px';
+                ember.style.height = ember.style.width;
+                ember.style.filter = `blur(${Math.random() < 0.4 ? 1 : 0}px)`;
+                body.appendChild(ember);
+            }
+        }
+
+        /* ==========================================
+           TYPEWRITER EFFECT
+           ========================================== */
+        function startTypewriter(element, speed = 100) {
+            if (element.dataset.typing) return;
+            element.dataset.typing = true;
+
+            const text = element.getAttribute('data-text');
+            element.innerHTML = '';
+
+            const textSpan = document.createElement('span');
+            const cursorSpan = document.createElement('span');
+            cursorSpan.className = 'typewriter-cursor';
+
+            element.appendChild(textSpan);
+            element.appendChild(cursorSpan);
+
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    textSpan.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            // slight delay before typing starts after revealing
+            setTimeout(type, 800);
+        }
+
+        /* ==========================================
+           SCROLL REVEAL
+           ========================================== */
+        function initScrollReveal() {
+            const cards = document.querySelectorAll('.chapter-card, .chapter-video-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+
+                        // Check if this card has the typewriter text for Chapter 4
+                        const tw4 = entry.target.querySelector('#typewriterText');
+                        if (tw4) {
+                            startTypewriter(tw4, 120);
+                        }
+
+                        // Check if this card has the typewriter text for Chapter 1
+                        const tw1 = entry.target.querySelector('#typewriterText1');
+                        if (tw1) {
+                            startTypewriter(tw1, 100);
+                        }
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+            cards.forEach(card => observer.observe(card));
+
+            // Ending quote reveal
+            const endingQuote = document.getElementById('endingQuote');
+            if (endingQuote) {
+                const quoteObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                        }
+                    });
+                }, { threshold: 0.3 });
+                quoteObserver.observe(endingQuote);
+            }
+
+            // Voice button container reveal
+            const voiceBtnContainer = document.getElementById('voiceBtnContainer');
+            if (voiceBtnContainer) {
+                const voiceBtnObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                        }
+                    });
+                }, { threshold: 0.3 });
+                voiceBtnObserver.observe(voiceBtnContainer);
+            }
+
+            // Auto-trigger voice clip when ending section comes into view (first time only)
+            const endingSection = document.querySelector('.ending-quote-section');
+            if (endingSection) {
+                const autoVoiceObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !voiceAutoTriggered) {
+                            voiceAutoTriggered = true;
+                            // Small delay for dramatic effect
+                            setTimeout(() => { playVoiceClip(); }, 1500);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                autoVoiceObserver.observe(endingSection);
+            }
+        }
+
+        /* ==========================================
+           VOICE CLIP PLAYBACK
+           ========================================== */
+        let voiceHasPlayed = false;
+        let voiceAutoTriggered = false;
+
+        function playVoiceClip() {
+            const bgMusic = document.getElementById('bgMusic');
+            const voiceClip = document.getElementById('voiceClip');
+            const voiceBtn = document.getElementById('voiceClipBtn');
+            const replayBtn = document.getElementById('voiceReplayBtn');
+            const playingIndicator = document.getElementById('voicePlayingIndicator');
+            const voiceOverlay = document.getElementById('voiceOverlay');
+
+            // Pause BGM
+            bgMusic.pause();
+
+            // Set voice clip to MAX volume
+            voiceClip.volume = 1.0;
+
+            // Reset and play voice clip
+            voiceClip.currentTime = 0;
+            voiceClip.play().catch(() => { });
+
+            // Show fullscreen overlay
+            voiceOverlay.style.display = 'flex';
+            setTimeout(() => { voiceOverlay.classList.add('active'); }, 50);
+
+            // Update UI
+            voiceBtn.disabled = true;
+            voiceBtn.textContent = '♪ กำลังเล่น... ♪';
+            playingIndicator.style.display = 'block';
+            replayBtn.style.display = 'none';
+
+            // When voice clip ends
+            voiceClip.onended = function () {
+                // Hide overlay
+                voiceOverlay.classList.remove('active');
+                setTimeout(() => { voiceOverlay.style.display = 'none'; }, 800);
+
+                // Resume BGM
+                if (audioPlaying) {
+                    bgMusic.play().catch(() => { });
+                }
+
+                // Update UI
+                voiceHasPlayed = true;
+                voiceBtn.disabled = false;
+                voiceBtn.textContent = '✦ บทความนิรันดร์ ✦';
+                playingIndicator.style.display = 'none';
+                replayBtn.style.display = 'inline-block';
+            };
+        }
+
+        /* ==========================================
+           VIDEO AUTOPLAY ON SCROLL
+           ========================================== */
+        function initVideoAutoplay() {
+            const videoBgs = document.querySelectorAll('.chapter-video-bg');
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target.querySelector('video');
+                    if (!video) return;
+                    if (entry.isIntersecting) {
+                        video.play().catch(() => { });
+                    } else {
+                        video.pause();
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            videoBgs.forEach(bg => videoObserver.observe(bg));
+        }
+
+        /* ==========================================
+           SCROLL PROGRESS BAR
+           ========================================== */
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docH = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = docH > 0 ? (scrollTop / docH) * 100 : 0;
+            document.getElementById('scrollProgress').style.width = progress + '%';
+        });
+
+        /* ==========================================
+           LOVE TIMER
+           ========================================== */
+        function startTimer() {
+            const startDate = new Date('2025-11-05T00:00:00+07:00');
+
+            function update() {
+                const now = new Date();
+                let diff = Math.floor((now - startDate) / 1000);
+
+                if (diff < 0) diff = 0;
+
+                const days = Math.floor(diff / 86400);
+                const hours = Math.floor((diff % 86400) / 3600);
+                const minutes = Math.floor((diff % 3600) / 60);
+                const seconds = diff % 60;
+
+                document.getElementById('timerDays').textContent = days.toLocaleString();
+                document.getElementById('timerHours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('timerMinutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('timerSeconds').textContent = String(seconds).padStart(2, '0');
+            }
+
+            update();
+            setInterval(update, 1000);
+        }
+
+        /* ==========================================
+           WEB AUDIO API — AMBIENT DRONE
+           ========================================== */
+        let audioCtx = null;
+        let audioPlaying = false;
+        let masterGain = null;
+        let oscillators = [];
+
+        function initAudio() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            masterGain = audioCtx.createGain();
+            masterGain.gain.value = 0;
+            masterGain.connect(audioCtx.destination);
+
+            // Deep base drone
+            const osc1 = audioCtx.createOscillator();
+            osc1.type = 'sine';
+            osc1.frequency.value = 65;  // Low C
+            const g1 = audioCtx.createGain();
+            g1.gain.value = 0.15;
+            osc1.connect(g1);
+            g1.connect(masterGain);
+            osc1.start();
+            oscillators.push(osc1);
+
+            // Perfect fifth harmony
+            const osc2 = audioCtx.createOscillator();
+            osc2.type = 'sine';
+            osc2.frequency.value = 98; // G
+            const g2 = audioCtx.createGain();
+            g2.gain.value = 0.08;
+            osc2.connect(g2);
+            g2.connect(masterGain);
+            osc2.start();
+            oscillators.push(osc2);
+
+            // Ethereal high pad
+            const osc3 = audioCtx.createOscillator();
+            osc3.type = 'sine';
+            osc3.frequency.value = 196; // G3
+            const g3 = audioCtx.createGain();
+            g3.gain.value = 0.04;
+            osc3.connect(g3);
+            g3.connect(masterGain);
+            osc3.start();
+            oscillators.push(osc3);
+
+            // Subtle warm triangle
+            const osc4 = audioCtx.createOscillator();
+            osc4.type = 'triangle';
+            osc4.frequency.value = 130; // C3
+            const g4 = audioCtx.createGain();
+            g4.gain.value = 0.05;
+            osc4.connect(g4);
+            g4.connect(masterGain);
+            osc4.start();
+            oscillators.push(osc4);
+
+            // Gentle LFO on the base drone freq for slight warble
+            const lfo = audioCtx.createOscillator();
+            lfo.type = 'sine';
+            lfo.frequency.value = 0.15;
+            const lfoGain = audioCtx.createGain();
+            lfoGain.gain.value = 2;
+            lfo.connect(lfoGain);
+            lfoGain.connect(osc1.frequency);
+            lfo.start();
+            oscillators.push(lfo);
+
+            // Slow shimmer on the high pad
+            const lfo2 = audioCtx.createOscillator();
+            lfo2.type = 'sine';
+            lfo2.frequency.value = 0.08;
+            const lfo2Gain = audioCtx.createGain();
+            lfo2Gain.gain.value = 0.03;
+            lfo2.connect(lfo2Gain);
+            lfo2Gain.connect(g3.gain);
+            lfo2.start();
+            oscillators.push(lfo2);
+        }
+
+        function toggleAudio() {
+            const bgMusic = document.getElementById('bgMusic');
+            const btn = document.getElementById('audioToggle');
+
+            if (!audioPlaying) {
+                bgMusic.play().catch(() => { });
+                audioPlaying = true;
+                btn.innerHTML = '<span class="icon">♫</span> ปิดเพลง';
+            } else {
+                bgMusic.pause();
+                audioPlaying = false;
+                btn.innerHTML = '<span class="icon">♫</span> เปิดเพลง';
+            }
+        }
+    </script>
+</body>
+
+</html>
